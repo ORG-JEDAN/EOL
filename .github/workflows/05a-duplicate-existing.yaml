@@ -1,5 +1,4 @@
-name: Copy BBB-2 Repository
-
+name: Copy existing
 on:
   workflow_dispatch:
     inputs:
