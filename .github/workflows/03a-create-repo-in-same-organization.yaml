@@ -32,11 +32,4 @@ jobs:
 
           echo "Repository ORG-JEDAN/BBB-2 created successfully!"
 
-      - name: Push current code to the new repository
-        env:
-          GH_TOKEN: ${{ secrets.CREATE_REPO_PAT }}
-        run: |
-          git remote add new-repo \
-            https://${{ secrets.CREATE_REPO_PAT }}@github.com/ORG-JEDAN/BBB-2.git
-
-          git push -u new-repo main
+   
