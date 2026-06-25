@@ -1,0 +1,42 @@
+name: Create BBB-2 Repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      visibility:
+        description: 'Repository visibility'
+        required: true
+        default: 'private'
+        type: choice
+        options:
+          - private
+          - public
+
+jobs:
+  create-new-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create new repository in ORG-JEDAN
+        env:
+          GH_TOKEN: ${{ secrets.CREATE_REPO_PAT }}
+        run: |
+          gh repo create ORG-JEDAN/BBB-2 \
+            --${{ github.event.inputs.visibility }} \
+            --description "Repository created automatically from EOL"
+
+          echo "Repository ORG-JEDAN/BBB-2 created successfully!"
+
+      - name: Push current code to the new repository
+        env:
+          GH_TOKEN: ${{ secrets.CREATE_REPO_PAT }}
+        run: |
+          git remote add new-repo \
+            https://${{ secrets.CREATE_REPO_PAT }}@github.com/ORG-JEDAN/BBB-2.git
+
+          git push -u new-repo main
